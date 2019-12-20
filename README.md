@@ -24,7 +24,13 @@ TODO: add windows instructions
 ## Continue Getting Started
 
 3. Run `npm install`
+
 4. Run `npm run start`
+
+5. Open a browser and go to `https://localhost:8080`
+- Note: The browser will correctly warn you that the certificate is not valid (since it is self-signed). You can "proceed" and the URL will say "NOT SECURE" but you are now using HTTPS.
+
+6. Profit! You've successfully setup HTTPS locally.
 
 ## Notes
 - Safari only allows httpOnly cookies to be set for the same domain.

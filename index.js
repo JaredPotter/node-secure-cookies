@@ -7,12 +7,10 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 
-
 const serverOptions = {
     key: fs.readFileSync('server.key'),
     cert: fs.readFileSync('server.cert')
 };
-
 
 const inMemoryUserStoreDatabase = {
     jaredpotter: '<superSecretPassword>'
@@ -50,8 +48,8 @@ webApp.use(express.static('public'));
 https.createServer(serverOptions, webApp).listen(webServerPort, () => {
     console.log(`HTTPS Web Server Stated on port ${webServerPort}!`);
 });
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 const httpsApp = express();
 const httpsServerPort = 3000;
