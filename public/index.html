@@ -36,7 +36,8 @@
         const passwordElement = document.getElementById('password');
         usernameElement.value = 'jaredpotter';
         passwordElement.value = '<superSecretPassword>';
-        const url = 'http://localhost:3000';
+        // const url = 'http://localhost:3000';
+        const url = 'https://localhost:3000';
 
         document.getElementById('getAuthData').addEventListener('click', () => {
             axios
@@ -46,7 +47,7 @@
                     document.getElementById('response').textContent = response.data;
                 })
                 .catch(error => {
-                    document.getElementById('response').textContent = error.message
+                    document.getElementById('response').textContent = error.response.data;
                 });       
         });
 
@@ -55,6 +56,7 @@
                 .post(`${url}/logout`, {},
                     { withCredentials: true })
                 .then(response => {
+                    document.getElementById('response').textContent = 'Successfully Logged Out.';
                 })
                 .catch(error => {
                 });       
@@ -71,10 +73,12 @@
                     withCredentials: true
                 })
                 .then(response => {
-                    debugger;
+                    // debugger;
+                    document.getElementById('response').textContent = 'Successfully Logged In.';
                 })
                 .catch(error => {
-                    debugger;
+                    // debugger;
+                    document.getElementById('response').textContent = error.response.data;
                 });
         }
     </script>
