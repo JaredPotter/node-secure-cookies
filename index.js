@@ -1,19 +1,33 @@
 // External libraries
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = 3000;
 
+const inMemoryUserStore = {
+    'jaredpotter': '<superSecretPassword>',
+};
+
+const whitelist = ['http://localhost:*', 'http://127.0.0.1:5501'];
+
 const corsOptions = {
-    origin: 'http://localhost:3001',
+    origin: (origin, callback) => {
+        if (whitelist.indexOf(origin) !== -1) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+    },
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     credentials: true,
 };
 
 // Enable Express middlewares
 app.use(cors(corsOptions));
+app.use(bodyParser.json());
 app.use(cookieParser());
 
 const cookieConfig = {
@@ -24,9 +38,25 @@ const cookieConfig = {
 };
 
 app.post('/login', (req, res) => {
-    res.cookie('token', '<JWT TOKEN VALUE>', cookieConfig);
+    const body = req.body;
+    const username = body.username;
+    const password = body.password;
 
-    res.status(200).send('OK');
+    if(inMemoryUserStore[username] === password) {
+        // <Generate JWT token>
+        const jwt = 'blah.blah.blah';
+
+        res.cookie('token', jwt, cookieConfig);
+        res.status(200).send('OK');
+    }
+    else {
+        res.status(400).send('Username/password incorrect');
+    }
+});
+
+app.post('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.send('OK');
 });
 
 app.get('/authenticatedData', (req, res) => {
